@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
-public final class CsvReader {
+public class CsvReader {
 
     Logger logger = LoggerFactory.getLogger(CsvReader.class);
 
@@ -33,7 +33,7 @@ public final class CsvReader {
                 lines.add(Arrays.asList(values));
             }
         } catch (IOException e) {
-            logger.info("Failed to read file " + filename);
+            logger.error("Failed to read file " + filename);
         }
 
         return lines;

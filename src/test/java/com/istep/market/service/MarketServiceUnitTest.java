@@ -14,7 +14,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-class MarketServiceTest {
+class MarketServiceUnitTest {
 
     @Mock
     private PriceMapper priceMapper;
@@ -38,13 +38,14 @@ class MarketServiceTest {
         // Prepare test data
         String priceName = "EUR/USD";
         List<String> firstMarketPriceRow = List.of("105", "EUR/USD", "1.1000", "1.2000", "01-06-2020 12:01:01:001");
+        List<String> latestMarketPriceRow = List.of("106", "EUR/USD", "1.2000", "1.3000", "01-06-2020 12:01:01:005");
         List<List<String>> csvRecords = List.of(firstMarketPriceRow);
         Price expectedPrice = Price.builder()
                 .id(106)
                 .instrumentName(priceName)
-                .bid(1.0989)
-                .ask(1.21012)
-                .timestamp("01-06-2020 12:01:01:0011")
+                .bid(1.1988)
+                .ask(1.3013)
+                .timestamp("01-06-2020 12:01:01:005")
                 .build();
         List<Price> expectedPrices = Collections.singletonList(expectedPrice);
 
