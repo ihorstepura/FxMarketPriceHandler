@@ -9,11 +9,12 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-class MarketServiceTest {
+class MarketServiceUnitTest {
 
     @Mock
     private PriceMapper priceMapper;
@@ -35,14 +36,15 @@ class MarketServiceTest {
     @Test
     void getLatestPrice() {
         // Prepare test data
-        List<String> firstMarketPriceRow = List.of("105", "EUR/USD", "1.1000", "1.2000", "01-06-2020 12:01:01:001");
+        String priceName = "EUR/USD";
+        List<String> firstMarketPriceRow = List.of("106", "EUR/USD", "1.2000", "1.3000", "01-06-2020 12:01:01:005");
         List<List<String>> csvRecords = List.of(firstMarketPriceRow);
         Price expectedPrice = Price.builder()
                 .id(106)
-                .instrumentName("EUR/USD")
-                .bid(1.0989)
-                .ask(1.21012)
-                .timestamp("01-06-2020 12:01:01:0011")
+                .instrumentName(priceName)
+                .bid(1.1988)
+                .ask(1.3013)
+                .timestamp("01-06-2020 12:01:01:005")
                 .build();
         List<Price> expectedPrices = Collections.singletonList(expectedPrice);
 
@@ -51,9 +53,9 @@ class MarketServiceTest {
         when(marginCalculator.addCommission(expectedPrices.get(0))).thenReturn(expectedPrices.get(0));
 
         // Perform the service method invocation
-        Price actualPrice = marketService.getLatestPrice();
+        Optional<Price> actualPrice = marketService.getLatestPrice(priceName);
 
         // Verify the result
-        assertEquals(expectedPrices.get(0), actualPrice);
+        assertEquals(expectedPrices.get(0), actualPrice.get());
     }
 }

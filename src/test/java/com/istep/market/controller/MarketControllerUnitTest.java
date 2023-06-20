@@ -9,10 +9,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-class MarketControllerTest {
+class MarketControllerUnitTest {
 
     @Mock
     private MarketService marketService;
@@ -28,23 +30,24 @@ class MarketControllerTest {
     @Test
     public void getLatestPrice() {
         // Prepare test data
+        String priceName = "EUR/JPY";
         Price expectedPrice = Price.builder()
                 .id(1)
-                .instrumentName("Name")
+                .instrumentName(priceName)
                 .bid(1.0)
                 .ask(1.1)
                 .timestamp("01-06-2020 12:01:01:001")
                 .build();
-        when(marketService.getLatestPrice()).thenReturn(expectedPrice);
+        when(marketService.getLatestPrice(priceName)).thenReturn(Optional.of(expectedPrice));
 
         // Perform the controller method invocation
-        ResponseEntity<Price> responseEntity = marketController.getLatestPrice();
+        ResponseEntity<Optional<Price>> responseEntity = marketController.getLatestPrice(priceName);
 
         // Verify the response status code
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
         // Verify the response body
-        Price actualPrice = responseEntity.getBody();
+        Price actualPrice = responseEntity.getBody().get();
         assertEquals(expectedPrice, actualPrice);
     }
 }
