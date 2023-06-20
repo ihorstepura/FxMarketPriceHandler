@@ -1,6 +1,8 @@
 package com.istep.market.service;
 
 import com.istep.market.utils.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -14,12 +16,16 @@ import java.util.Objects;
 @Component
 public final class CsvReader {
 
+    Logger logger = LoggerFactory.getLogger(CsvReader.class);
+
     public List<List<String>> read() {
+
+        String filename = "marketPriceFeed.csv";
 
         List<List<String>> lines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader((
                 new InputStreamReader(Objects.requireNonNull(CsvReader.class.getClassLoader()
-                        .getResourceAsStream("marketPriceFeed.csv")))))
+                        .getResourceAsStream(filename)))))
         ) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -27,8 +33,7 @@ public final class CsvReader {
                 lines.add(Arrays.asList(values));
             }
         } catch (IOException e) {
-            // It is better to go with specific custom exception
-            throw new RuntimeException(e);
+            logger.info("Failed to read file " + filename);
         }
 
         return lines;
