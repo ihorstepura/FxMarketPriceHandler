@@ -4,11 +4,12 @@ import com.istep.market.utils.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public final class CsvReader {
@@ -16,9 +17,10 @@ public final class CsvReader {
     public List<List<String>> read() {
 
         List<List<String>> lines = new ArrayList<>();
-        // file path should be replaced with path from .properties
-        try (BufferedReader reader = new BufferedReader(
-                new FileReader("C:\\Users\\Engineer\\IdeaProjects\\FxMarket\\src\\main\\resources\\templates\\marketPriceFeed.csv"))) {
+        try (BufferedReader reader = new BufferedReader((
+                new InputStreamReader(Objects.requireNonNull(CsvReader.class.getClassLoader()
+                        .getResourceAsStream("marketPriceFeed.csv")))))
+        ) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] values = line.trim().split(StringUtils.COMMA);
