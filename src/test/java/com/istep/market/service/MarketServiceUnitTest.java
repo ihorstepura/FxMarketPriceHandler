@@ -37,8 +37,7 @@ class MarketServiceUnitTest {
     void getLatestPrice() {
         // Prepare test data
         String priceName = "EUR/USD";
-        List<String> firstMarketPriceRow = List.of("105", "EUR/USD", "1.1000", "1.2000", "01-06-2020 12:01:01:001");
-        List<String> latestMarketPriceRow = List.of("106", "EUR/USD", "1.2000", "1.3000", "01-06-2020 12:01:01:005");
+        List<String> firstMarketPriceRow = List.of("106", "EUR/USD", "1.2000", "1.3000", "01-06-2020 12:01:01:005");
         List<List<String>> csvRecords = List.of(firstMarketPriceRow);
         Price expectedPrice = Price.builder()
                 .id(106)
